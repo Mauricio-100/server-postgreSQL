@@ -11,12 +11,22 @@ async function initDB() {
     user: process.env.DB_USER || "avnadmin",
     password: process.env.DB_PASSWORD || "AVNS_BvVULOCxM7CcMQd0Aqw",
     database: process.env.DB_NAME || "defaultdb",
-    ssl: { rejectUnauthorized: false } // ✅ pas de blocage certificat
+    ssl: { rejectUnauthorized: false }
   });
 
   try {
-    await connection.query(sql);
-    console.log("✅ Base de données GamerHubX initialisée !");
+    // Découpe en plusieurs statements
+    const queries = sql
+      .split(";")
+      .map(q => q.trim())
+      .filter(q => q.length > 0);
+
+    for (const query of queries) {
+      console.log("▶️ Exécution :", query.slice(0, 60) + "...");
+      await connection.query(query);
+    }
+
+    console.log("✅ Base GamerHubX initialisée avec succès !");
   } catch (err) {
     console.error("❌ Erreur d'initialisation :", err);
   } finally {
