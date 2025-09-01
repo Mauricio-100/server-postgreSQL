@@ -1,20 +1,16 @@
-// dbInit.js
 import { readFileSync } from "fs";
 import mysql from "mysql2/promise";
-
-// Charger le certificat SSL
-const ca = readFileSync("./ca.pem", "utf8");
 
 const sql = readFileSync("./init.sql", "utf8");
 
 async function initDB() {
   const connection = await mysql.createConnection({
-    host: "mysql-1a36101-botwii.c.aivencloud.com",
-    port: 14721,
-    user: "avnadmin",
-    password: "AVNS_BvVULOCxM7CcMQd0Aqw",
-    database: "defaultdb",
-    ssl: { ca } // ✅ connexion sécurisée
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    ssl: { ca: process.env.DB_SSL_CERT }
   });
 
   try {
