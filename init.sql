@@ -1,4 +1,5 @@
 -- init.sql
+
 DROP TABLE IF EXISTS messages;
 DROP TABLE IF EXISTS friends;
 DROP TABLE IF EXISTS users;
